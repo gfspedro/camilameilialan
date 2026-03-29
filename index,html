@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dra. Camila Meilãn | Odontologia de Excelência</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        pink: {
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            200: '#fbcfe8',
+                            300: '#f9a8d4',
+                            400: '#f472b6',
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d',
+                            800: '#9d174d',
+                            900: '#831843',
+                            950: '#500724',
+                        },
+                        brand: {
+                            dark: '#0a0508', // Very dark pink-tinted black
+                            surface: '#160a12',
+                        }
+                    },
+                    backgroundImage: {
+                        'mesh-gradient': 'radial-gradient(at 40% 20%, hsla(330,80%,20%,1) 0px, transparent 50%), radial-gradient(at 80% 0%, hsla(335,70%,15%,1) 0px, transparent 50%), radial-gradient(at 0% 50%, hsla(320,60%,15%,1) 0px, transparent 50%), radial-gradient(at 80% 50%, hsla(340,90%,10%,1) 0px, transparent 50%), radial-gradient(at 0% 100%, hsla(330,80%,20%,1) 0px, transparent 50%), radial-gradient(at 80% 100%, hsla(320,70%,10%,1) 0px, transparent 50%), radial-gradient(at 0% 0%, hsla(335,80%,15%,1) 0px, transparent 50%)',
+                    },
+                    animation: {
+                        'shimmer': 'shimmer 2.5s infinite linear',
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        shimmer: {
+                            '0%': { transform: 'translateX(-150%)' },
+                            '100%': { transform: 'translateX(150%)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: theme('colors.brand.dark');
+            color: theme('colors.pink.50');
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(236, 72, 153, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-panel:hover {
+            border: 1px solid rgba(236, 72, 153, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px -10px rgba(219, 39, 119, 0.2);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #fbcfe8 0%, #ec4899 50%, #9d174d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .text-gradient-light {
+            background: linear-gradient(to right, #ffffff, #fbcfe8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Scroll Animations */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .fade-up.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* Button Glow */
+        .btn-glow {
+            position: relative;
+        }
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(45deg, #db2777, #f472b6, #db2777);
+            filter: blur(8px);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: inherit;
+        }
+        .btn-glow:hover::before {
+            opacity: 0.6;
+        }
+
+        /* Ambient Background */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            background: #0a0508;
+            overflow: hidden;
+        }
+        
+        .ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.4;
+            animation: pulse-slow 8s infinite alternate;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-pink-500 selection:text-white relative">
+
+    <!-- Ambient Animated Background -->
+    <div class="ambient-bg">
+        <div class="ambient-orb bg-pink-900/40 w-[600px] h-[600px] -top-[200px] -left-[200px]"></div>
+        <div class="ambient-orb bg-pink-800/30 w-[500px] h-[500px] top-[40%] -right-[100px] animation-delay-2000"></div>
+        <div class="ambient-orb bg-pink-950/50 w-[800px] h-[800px] -bottom-[300px] left-[20%] animation-delay-4000"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="absolute inset-0 bg-brand-dark/40 backdrop-blur-xl border-b border-white/5"></div>
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 relative">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-600 to-pink-300 p-[1px]">
+                        <div class="w-full h-full rounded-full bg-brand-dark flex items-center justify-center">
+                            <span class="font-serif text-lg text-pink-200 italic">CM</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-serif text-lg tracking-wide text-white">Dra. Camila Meilãn</span>
+                        <span class="text-[10px] uppercase tracking-[0.2em] text-pink-400/80">CRO 98.769</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#experiencia" class="text-sm text-pink-100/70 hover:text-white transition-colors">Experiência</a>
+                    <a href="#diferenciais" class="text-sm text-pink-100/70 hover:text-white transition-colors">Diferenciais</a>
+                    <a href="#depoimentos" class="text-sm text-pink-100/70 hover:text-white transition-colors">Depoimentos</a>
+                    <a href="https://wa.me/5511961974371" target="_blank" class="relative group overflow-hidden rounded-full bg-white/5 border border-pink-500/30 px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-white/10 hover:border-pink-400/50">
+                        <span class="relative z-10 flex items-center gap-2">
+                            <i data-lucide="calendar" class="w-4 h-4 text-pink-400"></i>
+                            Agendar Avaliação
+                        </span>
+                        <div class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:animate-shimmer z-0"></div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden min-h-screen flex items-center">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+                
+                <!-- Hero Content -->
+                <div class="max-w-2xl fade-up">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-pink-500/10 border border-pink-500/20 text-pink-300 text-xs font-medium uppercase tracking-wider mb-8">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                        <span>Especialista em Tratamento de Canal</span>
+                    </div>
+                    
+                    <h1 class="text-5xl lg:text-7xl font-serif leading-[1.1] mb-6 text-white">
+                        A Arte de Sorrir com <span class="text-gradient font-style-italic">Excelência.</span>
+                    </h1>
+                    
+                    <p class="text-lg lg:text-xl text-pink-100/60 font-light leading-relaxed mb-10 max-w-lg">
+                        Um novo conceito de Odontologia na Zona Leste. Há 16 anos transformando vidas através de tratamentos humanizados, precisos e de alto padrão em São Mateus.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-5">
+                        <a href="https://wa.me/5511961974371" target="_blank" class="btn-glow relative group overflow-hidden rounded-2xl bg-gradient-to-r from-pink-600 to-pink-500 px-8 py-4 text-center font-medium text-white shadow-[0_0_40px_rgba(219,39,119,0.4)] transition-all hover:scale-[1.02] hover:shadow-[0_0_60px_rgba(219,39,119,0.6)]">
+                            <span class="relative z-10 flex items-center justify-center gap-2 text-base">
+                                Solicitar Reserva Exclusiva
+                                <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                            </span>
+                            <div class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shimmer z-0"></div>
+                        </a>
+                        
+                        <a href="#diferenciais" class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl glass-panel text-white hover:bg-white/5 transition-all">
+                            <i data-lucide="play-circle" class="w-5 h-5 text-pink-400"></i>
+                            Conhecer a Clínica
+                        </a>
+                    </div>
+                    
+                    <div class="mt-12 flex items-center gap-6">
+                        <div class="flex -space-x-3">
+                            <img class="w-10 h-10 rounded-full border-2 border-brand-dark" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Paciente">
+                            <img class="w-10 h-10 rounded-full border-2 border-brand-dark" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80" alt="Paciente">
+                            <img class="w-10 h-10 rounded-full border-2 border-brand-dark" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="Paciente">
+                            <div class="w-10 h-10 rounded-full border-2 border-brand-dark bg-pink-900 flex items-center justify-center text-xs font-medium">+1k</div>
+                        </div>
+                        <div class="flex flex-col">
+                            <div class="flex gap-1 text-pink-400">
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            </div>
+                            <span class="text-sm text-pink-100/60 mt-1"><strong class="text-white">5.0</strong> (61 Avaliações no Google)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Imagery -->
+                <div class="relative hidden lg:block h-[600px] w-full fade-up delay-200">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-brand-dark via-transparent to-transparent z-10"></div>
+                    <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=800&q=80" alt="Consultório Odontológico Premium" class="w-full h-full object-cover rounded-[2.5rem] opacity-80 mix-blend-luminosity border border-white/5 shadow-2xl">
+                    
+                    <!-- Floating Badge 1 -->
+                    <div class="absolute top-12 -left-12 z-20 glass-panel rounded-2xl p-4 flex items-center gap-4 animate-float">
+                        <div class="w-12 h-12 rounded-full bg-pink-500/20 flex items-center justify-center">
+                            <i data-lucide="award" class="w-6 h-6 text-pink-400"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-white">16 Anos</p>
+                            <p class="text-xs text-pink-200/70">Transformando Vidas</p>
+                        </div>
+                    </div>
+
+                    <!-- Floating Badge 2 -->
+                    <div class="absolute bottom-20 -right-8 z-20 glass-panel rounded-2xl p-4 flex items-center gap-4 animate-float-delayed">
+                        <div class="w-12 h-12 rounded-full bg-pink-500/20 flex items-center justify-center">
+                            <i data-lucide="map-pin" class="w-6 h-6 text-pink-400"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-white">São Mateus</p>
+                            <p class="text-xs text-pink-200/70">Localização Privilegiada</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bento Grid (Diferenciais) -->
+    <section id="diferenciais" class="py-24 relative z-10">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16 fade-up">
+                <h2 class="text-3xl lg:text-5xl font-serif text-white mb-4">A Assinatura do Nosso <span class="text-gradient">Cuidado</span></h2>
+                <p class="text-pink-100/60 max-w-2xl mx-auto">Elevamos o padrão da odontologia unindo tecnologia de ponta, ambiente acolhedor e uma expertise inigualável em saúde bucal.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[280px]">
+                
+                <!-- Bento 1: Endodontia (Large) -->
+                <div class="glass-panel rounded-3xl p-8 md:col-span-2 md:row-span-2 relative overflow-hidden group fade-up">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-pink-600/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 group-hover:bg-pink-500/30 transition-colors duration-500"></div>
+                    <div class="relative z-10 h-full flex flex-col justify-between">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-500/20 to-pink-900/40 border border-pink-500/20 flex items-center justify-center mb-6">
+                                <i data-lucide="microscope" class="w-7 h-7 text-pink-400"></i>
+                            </div>
+                            <h3 class="text-2xl lg:text-3xl font-serif text-white mb-3">Endodontia de Precisão</h3>
+                            <p class="text-pink-100/70 leading-relaxed max-w-md">Especialista em Tratamento de Canal. Utilizamos protocolos modernos e tecnologia avançada para garantir um procedimento indolor, rápido e com previsibilidade absoluta.</p>
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1576091160550-2173ff9e5eb2?auto=format&fit=crop&w=600&q=80" class="absolute bottom-0 right-0 w-2/3 h-auto opacity-30 mix-blend-screen rounded-tl-[4rem] group-hover:scale-105 transition-transform duration-700" alt="Equipamento de Precisão">
+                    </div>
+                </div>
+
+                <!-- Bento 2: 16 Anos -->
+                <div class="glass-panel rounded-3xl p-8 relative overflow-hidden group fade-up delay-100">
+                    <div class="relative z-10 h-full flex flex-col items-center justify-center text-center">
+                        <span class="text-6xl font-serif text-gradient mb-2">16</span>
+                        <h3 class="text-lg font-medium text-white mb-1">Anos de Maestria</h3>
+                        <p class="text-sm text-pink-100/60">Uma trajetória de confiança e milhares de sorrisos restaurados na Zona Leste.</p>
+                    </div>
+                </div>
+
+                <!-- Bento 3: Image -->
+                <div class="glass-panel rounded-3xl relative overflow-hidden fade-up delay-200">
+                    <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=400&q=80" alt="Detalhe Odontológico" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-luminosity group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/20 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6">
+                        <h3 class="text-lg font-medium text-white">Estética Ímpar</h3>
+                    </div>
+                </div>
+
+                <!-- Bento 4: Location/Comfort -->
+                <div class="glass-panel rounded-3xl p-8 md:col-span-2 flex items-center gap-8 relative overflow-hidden group fade-up">
+                    <div class="flex-1 relative z-10">
+                        <div class="w-12 h-12 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center mb-4">
+                            <i data-lucide="sofa" class="w-6 h-6 text-pink-400"></i>
+                        </div>
+                        <h3 class="text-xl font-serif text-white mb-2">Ambiente Exclusivo</h3>
+                        <p class="text-sm text-pink-100/70">Desde a recepção, um espaço meticulosamente higienizado e desenhado para o seu máximo conforto. Um novo conceito em São Mateus.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof (Reviews) -->
+    <section id="depoimentos" class="py-24 relative z-10 bg-gradient-to-b from-transparent to-pink-950/20 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 fade-up">
+                <div class="max-w-2xl">
+                    <h2 class="text-3xl lg:text-5xl font-serif text-white mb-4">Reconhecimento <span class="text-gradient">Absoluto.</span></h2>
+                    <p class="text-pink-100/60">A satisfação dos nossos pacientes reflete o padrão de excelência que entregamos todos os dias.</p>
+                </div>
+                <div class="mt-6 md:mt-0 flex items-center gap-4">
+                    <div class="flex text-pink-400">
+                        <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                        <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                        <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                        <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                        <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-2xl font-semibold text-white">5.0</p>
+                        <p class="text-xs text-pink-200/50 uppercase tracking-widest">Google Reviews</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Review 1 -->
+                <div class="glass-panel rounded-3xl p-8 fade-up">
+                    <div class="flex text-pink-400 mb-6">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-pink-50/90 text-lg font-serif italic mb-8 leading-relaxed">"Desde a recepção, ambiente limpo com profissionais de alta qualidade..."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-pink-900/50 flex items-center justify-center text-sm font-semibold text-pink-300">P</div>
+                        <div>
+                            <p class="text-sm font-medium text-white">Paciente Verificado</p>
+                            <p class="text-xs text-pink-200/50">Avaliação no Google</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="glass-panel rounded-3xl p-8 fade-up delay-100">
+                    <div class="flex text-pink-400 mb-6">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-pink-50/90 text-lg font-serif italic mb-8 leading-relaxed">"Mto bem atendida....melhor dentista como profissional e pessoa...."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-pink-900/50 flex items-center justify-center text-sm font-semibold text-pink-300">P</div>
+                        <div>
+                            <p class="text-sm font-medium text-white">Paciente Verificado</p>
+                            <p class="text-xs text-pink-200/50">Avaliação no Google</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="glass-panel rounded-3xl p-8 fade-up delay-200">
+                    <div class="flex text-pink-400 mb-6">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-pink-50/90 text-lg font-serif italic mb-8 leading-relaxed">"Já virei fã e super recomendo pra todo mundo que quer um sorriso top!"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-pink-900/50 flex items-center justify-center text-sm font-semibold text-pink-300">P</div>
+                        <div>
+                            <p class="text-sm font-medium text-white">Paciente Verificado</p>
+                            <p class="text-xs text-pink-200/50">Avaliação no Google</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="py-24 relative z-10">
+        <div class="max-w-5xl mx-auto px-6 lg:px-8 text-center fade-up">
+            <div class="glass-panel rounded-[3rem] p-12 lg:p-20 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-b from-pink-600/10 to-transparent"></div>
+                <div class="relative z-10">
+                    <h2 class="text-4xl lg:text-6xl font-serif text-white mb-6">Pronto para a <span class="text-gradient">Transformação?</span></h2>
+                    <p class="text-lg text-pink-100/70 mb-10 max-w-xl mx-auto">Agende sua avaliação e descubra o padrão de excelência que vai redefinir a saúde e estética do seu sorriso.</p>
+                    
+                    <a href="https://wa.me/5511961974371" target="_blank" class="btn-glow inline-flex items-center justify-center gap-3 relative group overflow-hidden rounded-2xl bg-white px-10 py-5 text-center font-semibold text-pink-700 shadow-[0_0_40px_rgba(255,255,255,0.2)] transition-all hover:scale-[1.02]">
+                        <span class="relative z-10 flex items-center justify-center gap-2">
+                            <i data-lucide="message-circle" class="w-6 h-6"></i>
+                            Falar com a Clínica no WhatsApp
+                        </span>
+                        <div class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-pink-100/50 to-transparent group-hover:animate-shimmer z-0"></div>
+                    </a>
+                    
+                    <p class="text-xs text-pink-200/50 mt-6 uppercase tracking-widest">Atendimento Premium em São Mateus, SP</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 relative z-10 bg-brand-dark pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-600 to-pink-300 p-[1px]">
+                            <div class="w-full h-full rounded-full bg-brand-dark flex items-center justify-center">
+                                <span class="font-serif text-lg text-pink-200 italic">CM</span>
+                            </div>
+                        </div>
+                        <span class="font-serif text-2xl tracking-wide text-white">Dra. Camila Meilãn</span>
+                    </div>
+                    <p class="text-pink-100/50 text-sm max-w-md leading-relaxed">
+                        Um novo conceito de Odontologia para São Mateus. Especialista em Tratamento de Canal e excelência estética há mais de 16 anos.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-medium mb-6 uppercase tracking-wider text-xs">Contato Direto</h4>
+                    <ul class="space-y-4">
+                        <li>
+                            <a href="tel:+5511961974371" class="text-pink-100/60 hover:text-pink-400 transition-colors text-sm flex items-center gap-2">
+                                <i data-lucide="phone" class="w-4 h-4"></i> (11) 96197-4371
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://instagram.com/dra_camila_meilan" target="_blank" class="text-pink-100/60 hover:text-pink-400 transition-colors text-sm flex items-center gap-2">
+                                <i data-lucide="instagram" class="w-4 h-4"></i> @dra_camila_meilan
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-medium mb-6 uppercase tracking-wider text-xs">Clínica</h4>
+                    <ul class="space-y-4 text-sm text-pink-100/60">
+                        <li class="flex gap-2">
+                            <i data-lucide="map-pin" class="w-4 h-4 shrink-0 mt-1 text-pink-400"></i>
+                            <span>Av. Mateo Bei, 1502<br>São Mateus, São Paulo - SP<br>CEP: 03949-100</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <i data-lucide="clock" class="w-4 h-4 shrink-0 mt-1 text-pink-400"></i>
+                            <span>Segunda a Sexta<br>A partir das 09:00</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-xs text-pink-100/40">
+                    &copy; 2026 Dra. Camila Meilãn. Todos os direitos reservados. CRO-SP 98.769
+                </p>
+                <div class="text-xs text-pink-100/40 flex items-center gap-1">
+                    Desenvolvido com <i data-lucide="heart" class="w-3 h-3 text-pink-600 fill-current"></i> para alta performance
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Navbar blur effect on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-lg');
+            } else {
+                navbar.classList.remove('shadow-lg');
+            }
+        });
+
+        // Intersection Observer for scroll animations (Fade up)
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target); // Run once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach((elem) => {
+            observer.observe(elem);
+        });
+    </script>
+</body>
+</html>
